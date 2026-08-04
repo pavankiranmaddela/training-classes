@@ -1,0 +1,27 @@
+Controller -> Service -> Repository
+
+
+Controller {
+
+Service service; // spring will create the object for you - it will keep it in spring container
+
+
+}
+
+// object - bean
+@COmponent
+Service {
+
+}
+
+@COmponent - it will help in identifying the class that Spring needs to create the bean/object
+@Autowired - it will supply the bean to the variable
+Spring container will have the bean
+
+
+Dependency Injection:
+
+
+@Autowired
+field injection
+constructor
