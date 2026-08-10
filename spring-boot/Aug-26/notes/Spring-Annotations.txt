@@ -11,3 +11,10 @@
 @GetMapping
 @PutMapping
 @DeleteMapping
+
+spring boot annotations
+@SpringBootApplication
+
+@SpringBootConfiguration
+@EnableAutoConfiguration
+@ComponentScan
