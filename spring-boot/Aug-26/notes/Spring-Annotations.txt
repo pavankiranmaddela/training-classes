@@ -1,4 +1,13 @@
 @RestController
 @Service
 @Repository
+@Entity
+@Table
 @Component
+@PathVariable
+
+@RequestMapping
+@PostMapping
+@GetMapping
+@PutMapping
+@DeleteMapping
