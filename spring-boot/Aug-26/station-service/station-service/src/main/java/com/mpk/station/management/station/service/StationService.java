@@ -1,5 +1,8 @@
 package com.mpk.station.management.station.service;
 
+import com.mpk.station.management.station.dto.CreateStationRequest;
+import com.mpk.station.management.station.dto.StationResponse;
+import com.mpk.station.management.station.mapper.StationMapper;
 import com.mpk.station.management.station.model.Station;
 import com.mpk.station.management.station.repository.StationRepository;
 import lombok.AllArgsConstructor;
@@ -17,9 +20,16 @@ public class StationService {
 
     private final StationRepository stationRepository;
 
-    public Station createStation(Station station) {
+    public StationResponse createStation(CreateStationRequest request) {
+        Station station = StationMapper.toEntity(request);
+        Station exiting = stationRepository.findByName(station.getName());
+
+        if (exiting != null) {
+            throw new RuntimeException("Name cant be duplicate");
+        }
+
         Station saved = stationRepository.save(station);
-        return saved;
+        return StationMapper.toResponse(saved);
     }
 
     public List<Station> getAllStations() {

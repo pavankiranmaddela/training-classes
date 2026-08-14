@@ -1,9 +1,12 @@
 package com.mpk.station.management.station.controller;
 
+import com.mpk.station.management.station.dto.CreateStationRequest;
+import com.mpk.station.management.station.dto.StationResponse;
 import com.mpk.station.management.station.model.Station;
 import com.mpk.station.management.station.repository.StationRepository;
 import com.mpk.station.management.station.service.StationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 
@@ -17,8 +20,9 @@ public class StationController {
     public final StationService stationService;
 
     @PostMapping
-    public Station create(@RequestBody Station station) {
-        return stationService.createStation(station);
+    @ResponseStatus(HttpStatus.CREATED)
+    public StationResponse create(@RequestBody CreateStationRequest createStationRequest) {
+        return stationService.createStation(createStationRequest);
     }
     //get - GET
     @GetMapping

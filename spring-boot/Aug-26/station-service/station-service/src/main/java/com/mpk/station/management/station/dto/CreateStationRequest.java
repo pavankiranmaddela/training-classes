@@ -3,6 +3,8 @@ package com.mpk.station.management.station.dto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 
+import java.util.UUID;
+
 /**
  * Request payload for {@code POST /stations}.
  * <p>
@@ -18,6 +20,9 @@ public record CreateStationRequest(
 
 		@Size(max = 2000, message = "description must be at most 2000 characters")
 		String description,
+
+		@NotNull(message = "owner should not be null")
+		UUID ownerId,
 
 		@NotNull(message = "latitude is required")
 		@DecimalMin(value = "-90.0", message = "latitude must be >= -90")
