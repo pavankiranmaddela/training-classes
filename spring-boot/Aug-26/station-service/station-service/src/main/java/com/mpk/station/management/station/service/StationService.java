@@ -2,6 +2,9 @@ package com.mpk.station.management.station.service;
 
 import com.mpk.station.management.station.dto.CreateStationRequest;
 import com.mpk.station.management.station.dto.StationResponse;
+import com.mpk.station.management.station.dto.UpdateStationRequest;
+import com.mpk.station.management.station.exception.DuplicateStationException;
+import com.mpk.station.management.station.exception.StationNotFoundException;
 import com.mpk.station.management.station.mapper.StationMapper;
 import com.mpk.station.management.station.model.Station;
 import com.mpk.station.management.station.repository.StationRepository;
@@ -25,10 +28,23 @@ public class StationService {
         Station exiting = stationRepository.findByName(station.getName());
 
         if (exiting != null) {
-            throw new RuntimeException("Name cant be duplicate");
+            throw new DuplicateStationException("Name cant be duplicate");
         }
 
         Station saved = stationRepository.save(station);
+        return StationMapper.toResponse(saved);
+    }
+
+    public StationResponse updateStation(String stationId, UpdateStationRequest request) {
+        Station exiting = stationRepository.findById(UUID.fromString(stationId)).orElse(null);
+
+        if (exiting == null) {
+            throw new StationNotFoundException("Station not found");
+        }
+
+        StationMapper.applyUpdate(exiting, request);
+
+        Station saved = stationRepository.save(exiting);
         return StationMapper.toResponse(saved);
     }
 
@@ -36,8 +52,19 @@ public class StationService {
         return stationRepository.findAll();
     }
 
-    public Station getStationById(String id) {
+    public StationResponse getStationById(String id) {
         Optional<Station> stationOptional = stationRepository.findById(UUID.fromString(id));
-        return stationOptional.orElse(null);
+        stationOptional.orElseThrow(() -> new StationNotFoundException("Station not found"));
+        return StationMapper.toResponse(stationOptional.get());
+    }
+
+    public void deleteStation(String stationId) {
+        Station existing = stationRepository.findById(UUID.fromString(stationId)).orElse(null);
+
+        if (existing == null) {
+            throw new StationNotFoundException("Station not found");
+        }
+
+        stationRepository.delete(existing);
     }
 }

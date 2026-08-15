@@ -2,6 +2,7 @@ package com.mpk.station.management.station.mapper;
 
 import com.mpk.station.management.station.dto.CreateStationRequest;
 import com.mpk.station.management.station.dto.StationResponse;
+import com.mpk.station.management.station.dto.UpdateStationRequest;
 import com.mpk.station.management.station.model.Station;
 
 import java.util.UUID;
@@ -30,6 +31,11 @@ public final class StationMapper {
                 .description(request.description())
                 .ownerId(request.ownerId())
                 .build();
+    }
+
+    public static void applyUpdate(Station station, UpdateStationRequest request) {
+        station.setName(request.name());
+        station.setDescription(request.description());
     }
 
     public static StationResponse toResponse(Station station) {

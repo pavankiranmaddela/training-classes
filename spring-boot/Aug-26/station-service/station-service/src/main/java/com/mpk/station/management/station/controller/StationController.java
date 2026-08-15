@@ -2,9 +2,12 @@ package com.mpk.station.management.station.controller;
 
 import com.mpk.station.management.station.dto.CreateStationRequest;
 import com.mpk.station.management.station.dto.StationResponse;
+import com.mpk.station.management.station.dto.UpdateStationRequest;
+import com.mpk.station.management.station.exception.StationNotFoundException;
 import com.mpk.station.management.station.model.Station;
 import com.mpk.station.management.station.repository.StationRepository;
 import com.mpk.station.management.station.service.StationService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/stations")
 @RequiredArgsConstructor
+@Slf4j
 public class StationController {
 
     public final StationService stationService;
@@ -24,25 +28,28 @@ public class StationController {
     public StationResponse create(@RequestBody CreateStationRequest createStationRequest) {
         return stationService.createStation(createStationRequest);
     }
-    //get - GET
+
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public List<Station> getAll() {
         return stationService.getAllStations();
     }
 
     @GetMapping("/{stationId}")
-    public Station get(@PathVariable String stationId) {
+    @ResponseStatus(HttpStatus.OK)
+    public StationResponse get(@PathVariable String stationId) {
         return stationService.getStationById(stationId);
     }
 
-    @PutMapping
-    public String update(String name) {
-        return name;
+    @PutMapping("/{stationId}")
+    @ResponseStatus(HttpStatus.OK)
+    public StationResponse update(@PathVariable String stationId, @RequestBody UpdateStationRequest request) {
+        return stationService.updateStation(stationId ,request);
     }
 
-    //delete - DELETE
-    @DeleteMapping
-    public String delete(String name) {
-        return name;
+    @DeleteMapping("/{stationId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable String stationId) {
+        stationService.deleteStation(stationId);
     }
 }
