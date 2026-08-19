@@ -21,7 +21,7 @@ import java.util.List;
 @Slf4j
 public class StationController {
 
-    public final StationService stationService;
+    private final StationService stationService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

@@ -1,7 +1,8 @@
 spring:
   application:
     name: station-service
-
+  profiles:
+    active: dev
   # 1. Database Connection Settings
   datasource:
     url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
@@ -28,3 +29,12 @@ spring:
       hibernate:
         format_sql: true
 
+
+app:
+  payment:
+    gateway-url: https://payments.example.com
+    timeout-seconds: 30
+    retry-attempts: 3
+  security:
+    jwt-secret: ${JWT_SECRET}
+    token-expiry-hours: 24

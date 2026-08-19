@@ -1,13 +1,15 @@
+server:
+  port: ${SERVER_PORT}
 spring:
   application:
     name: station-service
 
   # 1. Database Connection Settings
   datasource:
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
-    driver-class-name: org.h2.Driver
-    username: sa
-    password: password
+    url: jdbc:postgresql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}
+    driver-class-name: org.postgresql.Driver
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
     generate-unique-name: false
 
   # 2. H2 Web Console Configuration

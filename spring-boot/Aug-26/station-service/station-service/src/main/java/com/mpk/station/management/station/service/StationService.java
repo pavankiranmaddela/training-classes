@@ -8,8 +8,10 @@ import com.mpk.station.management.station.exception.StationNotFoundException;
 import com.mpk.station.management.station.mapper.StationMapper;
 import com.mpk.station.management.station.model.Station;
 import com.mpk.station.management.station.repository.StationRepository;
+import com.mpk.station.management.config.PaymentConfig;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,14 +21,17 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class StationService {
 
     private final StationRepository stationRepository;
 
+    private final PaymentConfig paymentConfig;
+
     public StationResponse createStation(CreateStationRequest request) {
         Station station = StationMapper.toEntity(request);
         Station exiting = stationRepository.findByName(station.getName());
-
+        System.out.println("Payment config:" + paymentConfig);
         if (exiting != null) {
             throw new DuplicateStationException("Name cant be duplicate");
         }
