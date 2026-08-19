@@ -1,5 +1,7 @@
 package com.mpk.station.management.station.service;
 
+import com.mpk.station.management.config.PaymentConfig;
+import com.mpk.station.management.config.StationServiceConfig;
 import com.mpk.station.management.station.dto.CreateStationRequest;
 import com.mpk.station.management.station.dto.StationResponse;
 import com.mpk.station.management.station.dto.UpdateStationRequest;
@@ -8,11 +10,8 @@ import com.mpk.station.management.station.exception.StationNotFoundException;
 import com.mpk.station.management.station.mapper.StationMapper;
 import com.mpk.station.management.station.model.Station;
 import com.mpk.station.management.station.repository.StationRepository;
-import com.mpk.station.management.config.PaymentConfig;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,10 +27,13 @@ public class StationService {
 
     private final PaymentConfig paymentConfig;
 
+    private final StationServiceConfig stationServiceConfig;
+
     public StationResponse createStation(CreateStationRequest request) {
         Station station = StationMapper.toEntity(request);
         Station exiting = stationRepository.findByName(station.getName());
         System.out.println("Payment config:" + paymentConfig);
+        System.out.println("Station service config:" + stationServiceConfig);
         if (exiting != null) {
             throw new DuplicateStationException("Name cant be duplicate");
         }
